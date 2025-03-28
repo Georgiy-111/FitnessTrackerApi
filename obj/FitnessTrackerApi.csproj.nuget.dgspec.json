@@ -1,33 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Ger90\\FitnessTrackerApi\\FitnessTrackerApi.csproj": {}
+    "/Users/kirillognegin/RiderProjects/FitnessTrackerApi/FitnessTrackerApi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Ger90\\FitnessTrackerApi\\FitnessTrackerApi.csproj": {
+    "/Users/kirillognegin/RiderProjects/FitnessTrackerApi/FitnessTrackerApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Ger90\\FitnessTrackerApi\\FitnessTrackerApi.csproj",
+        "projectUniqueName": "/Users/kirillognegin/RiderProjects/FitnessTrackerApi/FitnessTrackerApi.csproj",
         "projectName": "FitnessTrackerApi",
-        "projectPath": "C:\\Users\\Ger90\\FitnessTrackerApi\\FitnessTrackerApi.csproj",
-        "packagesPath": "C:\\Users\\Ger90\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Ger90\\FitnessTrackerApi\\obj\\",
+        "projectPath": "/Users/kirillognegin/RiderProjects/FitnessTrackerApi/FitnessTrackerApi.csproj",
+        "packagesPath": "/Users/kirillognegin/.nuget/packages/",
+        "outputPath": "/Users/kirillognegin/RiderProjects/FitnessTrackerApi/obj/",
         "projectStyle": "PackageReference",
-        "UsingMicrosoftNETSdk": false,
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Ger90\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/kirillognegin/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -45,7 +37,8 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        }
+        },
+        "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
         "net8.0": {
@@ -97,7 +90,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.406/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.101/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
