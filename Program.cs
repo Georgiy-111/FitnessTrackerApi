@@ -31,6 +31,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+Console.WriteLine("Hello");
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
