@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using FitnessTrackerApi.data;
+using FitnessTrackerApi.Data;
 using FitnessTrackerApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
