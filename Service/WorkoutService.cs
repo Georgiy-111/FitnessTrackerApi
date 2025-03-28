@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using FitnessTrackerApi.Data;
 using FitnessTrackerApi.Models;
 using FitnessTrackerApi.Services;
