@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using FitnessTrackerApi.Models;
-using FitnessTrackerApi.Services;
+using FitnessTrackerApi.Service;
+
 namespace FitnessTrackerApi.Controllers;
 /// <summary>
 /// Контроллер для управления тренировками

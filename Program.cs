@@ -1,14 +1,7 @@
-using System;
-using System.IO;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
-using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using FitnessTrackerApi.Data;
-using FitnessTrackerApi.Services;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
+using FitnessTrackerApi.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<WorkoutService>();
