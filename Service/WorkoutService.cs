@@ -1,12 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using FitnessTrackerApi.Data;
+﻿using FitnessTrackerApi.Data;
 using FitnessTrackerApi.Models;
-using FitnessTrackerApi.Services;
+using Microsoft.EntityFrameworkCore;
 
-namespace FitnessTrackerApi.Services 
+namespace FitnessTrackerApi.Service 
 {
     /// <summary>
     /// Сервис для работы с тренировками.
@@ -21,7 +17,7 @@ namespace FitnessTrackerApi.Services
         /// <param name="context">Экземпляр <see cref="ApplicationDbContext"/> для взаимодействия с базой данных.</param>
         public WorkoutService(ApplicationDbContext context)
         {
-            _context = context;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
         /// <summary>
         /// Получает список всех тренировок.
@@ -30,7 +26,7 @@ namespace FitnessTrackerApi.Services
         /// <param name="cancellationToken">Токен отмены операции.</param>
         public async Task<IEnumerable<Workout>> GetAllAsync(CancellationToken cancellationToken)
         {
-            return await _context.Workouts.ToListAsync(cancellationToken);
+            return await _context.Workouts.Where(w => !w.IsDeleted).AsNoTracking().ToListAsync(cancellationToken);
         }
         /// <summary>
         /// Получает тренировку по её идентификатору.
@@ -39,7 +35,11 @@ namespace FitnessTrackerApi.Services
         /// <param name="cancellationToken">Токен отмены операции.</param>
         public async Task<Workout?> GetByIdAsync(int id, CancellationToken cancellationToken)
         {
-            return await _context.Workouts.FindAsync(new object[] { id }, cancellationToken);
+            if (id <= 0)
+            {
+                throw new ArgumentException("ID должен быть больше нуля", nameof(id));
+            }
+            return await _context.Workouts.Where(w => w.Id == id && !w.IsDeleted).SingleOrDefaultAsync(cancellationToken);
         }
         /// <summary>
         /// Создаёт новую тренировку.
@@ -49,6 +49,8 @@ namespace FitnessTrackerApi.Services
         /// <param name="cancellationToken">Токен отмены операции.</param> 
         public async Task<Workout> CreateAsync(Workout workout, CancellationToken cancellationToken)
         {
+            ValidateWorkout(workout);
+            
             _context.Workouts.Add(workout);
             await _context.SaveChangesAsync(cancellationToken);
             return workout;
@@ -62,14 +64,18 @@ namespace FitnessTrackerApi.Services
         public async Task<bool> UpdateAsync(int id, Workout workout, CancellationToken cancellationToken)
         {
             if (id != workout.Id)
-                return false;
-            //var existingWorkout = await _context.Workouts.AsNoTracking()
-               // .FirstOrDefaultAsync(w => w.Id == id, cancellationToken);
-    
-           // if (existingWorkout == null)
-              //  return false;                 Спросить про предварительный поиск.
+            {
+                throw new ArgumentException("ID тренировки не совпадает", nameof(id));
+            }
+            
+            var existingWorkout = await _context.Workouts.Where(w => w.Id == id && !w.IsDeleted).SingleOrDefaultAsync(cancellationToken);
 
-            _context.Entry(workout).State = EntityState.Modified;
+            if (existingWorkout == null)
+            {
+                throw new KeyNotFoundException("Тренировка не найдена или была удалена");
+            }
+            
+            _context.Entry(existingWorkout).CurrentValues.SetValues(workout);
             await _context.SaveChangesAsync(cancellationToken);
             return true;
         }
@@ -80,13 +86,43 @@ namespace FitnessTrackerApi.Services
         /// <param name="cancellationToken">Токен отмены операции.</param>
         public async Task<bool> DeleteAsync(int id, CancellationToken cancellationToken)
         {
-            var workout = await _context.Workouts.FindAsync(new object[] { id }, cancellationToken);
+            if (id <= 0)
+            {
+                throw new ArgumentException("ID должен быть больше нуля", nameof(id));
+            }
+            
+            var workout = await _context.Workouts.Where(w => w.Id == id && !w.IsDeleted).SingleOrDefaultAsync(cancellationToken);
             if (workout == null)
                 return false;
-
-            _context.Workouts.Remove(workout);
+            
+            workout.IsDeleted = true;
+            _context.Entry(workout).State = EntityState.Modified;
             await _context.SaveChangesAsync(cancellationToken);
             return true;
+        }
+/// <summary>
+/// Проверяет корректность данных тренировки
+/// </summary>
+/// <param name="workout"></param>
+/// <exception cref="ArgumentNullException"></exception>
+        private static void ValidateWorkout(Workout workout)
+        {
+            if (workout == null)
+            {
+                throw new ArgumentNullException(nameof(workout),"Объект тренировки не может быть null");
+            }
+            if (string.IsNullOrWhiteSpace(workout.Name))
+            {
+                throw new ArgumentException("Название тренировки не может быть пустым", nameof(workout.Name));
+            }
+            if (string.IsNullOrWhiteSpace(workout.Description))
+            {
+                throw new ArgumentException("Описание тренировки не может быть пустым", nameof(workout.Description));
+            }
+            if (workout.Duration <= 0)
+            {
+                throw new ArgumentException("Продолжительность тренировки должна быть больше нуля", nameof(workout.Duration));
+            }
         }
     }
 }
