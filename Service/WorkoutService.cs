@@ -26,7 +26,10 @@ namespace FitnessTrackerApi.Service
         /// <param name="cancellationToken">Токен отмены операции.</param>
         public async Task<IEnumerable<Workout>> GetAllAsync(CancellationToken cancellationToken)
         {
-            return await _context.Workouts.Where(w => !w.IsDeleted).AsNoTracking().ToListAsync(cancellationToken);
+            return await _context.Workouts
+                .Where(w => !w.IsDeleted)
+                .AsNoTracking()
+                .ToListAsync(cancellationToken);
         }
         /// <summary>
         /// Получает тренировку по её идентификатору.
@@ -39,7 +42,9 @@ namespace FitnessTrackerApi.Service
             {
                 throw new ArgumentException("ID должен быть больше нуля", nameof(id));
             }
-            return await _context.Workouts.Where(w => w.Id == id && !w.IsDeleted).SingleOrDefaultAsync(cancellationToken);
+            return await _context.Workouts
+                .Where(w => w.Id == id && !w.IsDeleted)
+                .SingleOrDefaultAsync(cancellationToken);
         }
         /// <summary>
         /// Создаёт новую тренировку.
@@ -68,7 +73,9 @@ namespace FitnessTrackerApi.Service
                 throw new ArgumentException("ID тренировки не совпадает", nameof(id));
             }
             
-            var existingWorkout = await _context.Workouts.Where(w => w.Id == id && !w.IsDeleted).SingleOrDefaultAsync(cancellationToken);
+            var existingWorkout = await _context.Workouts
+                .Where(w => w.Id == id && !w.IsDeleted)
+                .SingleOrDefaultAsync(cancellationToken);
 
             if (existingWorkout == null)
             {
@@ -91,7 +98,9 @@ namespace FitnessTrackerApi.Service
                 throw new ArgumentException("ID должен быть больше нуля", nameof(id));
             }
             
-            var workout = await _context.Workouts.Where(w => w.Id == id && !w.IsDeleted).SingleOrDefaultAsync(cancellationToken);
+            var workout = await _context.Workouts
+                .Where(w => w.Id == id && !w.IsDeleted)
+                .SingleOrDefaultAsync(cancellationToken);
             if (workout == null)
                 return false;
             
