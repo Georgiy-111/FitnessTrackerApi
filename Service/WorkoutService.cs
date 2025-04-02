@@ -54,6 +54,7 @@ namespace FitnessTrackerApi.Service
             _context.Workouts.Add(workout);
             await _context.SaveChangesAsync(cancellationToken);
             return workout;
+                ///1432214
         }
         /// <summary>
         /// Обновляет данные существующей тренировки.
