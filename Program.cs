@@ -4,7 +4,7 @@ using FitnessTrackerApi.Data;
 using FitnessTrackerApi.Service;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddScoped<WorkoutService>();
+builder.Services.AddScoped<IWorkoutService, WorkoutService>();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseMySql(
         builder.Configuration.GetConnectionString("DefaultConnection"),

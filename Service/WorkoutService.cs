@@ -4,26 +4,32 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FitnessTrackerApi.Service 
 {
+    
     /// <summary>
     /// Сервис для работы с тренировками.
     /// Отвечает за выполнение операций CRUD (создание, чтение, обновление, удаление) с тренировками.
     /// </summary>
-    public class WorkoutService
+    
+    public class WorkoutService : IWorkoutService
     {
         private readonly ApplicationDbContext _context;
+        
         /// <summary>
         /// Инициализирует новый экземпляр класса <see cref="WorkoutService"/>.
         /// </summary>
         /// <param name="context">Экземпляр <see cref="ApplicationDbContext"/> для взаимодействия с базой данных.</param>
+        
         public WorkoutService(ApplicationDbContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
+        
         /// <summary>
         /// Получает список всех тренировок.
         /// </summary>
         /// <returns>Список тренировок <see cref="Workout"/>.</returns>
         /// <param name="cancellationToken">Токен отмены операции.</param>
+        
         public async Task<IEnumerable<Workout>> GetAllAsync(CancellationToken cancellationToken)
         {
             return await _context.Workouts
@@ -31,11 +37,13 @@ namespace FitnessTrackerApi.Service
                 .AsNoTracking()
                 .ToListAsync(cancellationToken);
         }
+        
         /// <summary>
         /// Получает тренировку по её идентификатору.
         /// </summary>
         /// <param name="id">Идентификатор тренировки.</param>
         /// <param name="cancellationToken">Токен отмены операции.</param>
+        
         public async Task<Workout?> GetByIdAsync(int id, CancellationToken cancellationToken)
         {
             if (id <= 0)
@@ -46,12 +54,14 @@ namespace FitnessTrackerApi.Service
                 .Where(w => w.Id == id && !w.IsDeleted)
                 .SingleOrDefaultAsync(cancellationToken);
         }
+        
         /// <summary>
         /// Создаёт новую тренировку.
         /// </summary>
         /// <param name="workout">Объект тренировки для добавления.</param>
         /// <returns>Созданный объект <see cref="Workout"/>.</returns>
-        /// <param name="cancellationToken">Токен отмены операции.</param> 
+        /// <param name="cancellationToken">Токен отмены операции.</param>
+        
         public async Task<Workout> CreateAsync(Workout workout, CancellationToken cancellationToken)
         {
             ValidateWorkout(workout);
@@ -60,12 +70,14 @@ namespace FitnessTrackerApi.Service
             await _context.SaveChangesAsync(cancellationToken);
             return workout;
         }
+        
         /// <summary>
         /// Обновляет данные существующей тренировки.
         /// </summary>
         /// <param name="id">Идентификатор тренировки.</param>
         /// <param name="workout">Обновлённый объект тренировки.</param>
         /// <param name="cancellationToken">Токен отмены операции.</param>
+        
         public async Task<bool> UpdateAsync(int id, Workout workout, CancellationToken cancellationToken)
         {
             if (id != workout.Id)
@@ -86,11 +98,13 @@ namespace FitnessTrackerApi.Service
             await _context.SaveChangesAsync(cancellationToken);
             return true;
         }
+        
         /// <summary>
         /// Удаляет тренировку по её идентификатору.
         /// </summary>
         /// <param name="id">Идентификатор тренировки.</param>
         /// <param name="cancellationToken">Токен отмены операции.</param>
+        
         public async Task<bool> DeleteAsync(int id, CancellationToken cancellationToken)
         {
             if (id <= 0)
@@ -109,11 +123,13 @@ namespace FitnessTrackerApi.Service
             await _context.SaveChangesAsync(cancellationToken);
             return true;
         }
+        
 /// <summary>
 /// Проверяет корректность данных тренировки
 /// </summary>
 /// <param name="workout"></param>
 /// <exception cref="ArgumentNullException"></exception>
+
         private static void ValidateWorkout(Workout workout)
         {
             if (workout == null)
