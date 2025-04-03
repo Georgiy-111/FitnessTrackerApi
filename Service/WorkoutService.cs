@@ -9,7 +9,6 @@ namespace FitnessTrackerApi.Service
     /// Сервис для работы с тренировками.
     /// Отвечает за выполнение операций CRUD (создание, чтение, обновление, удаление) с тренировками.
     /// </summary>
-    
     public class WorkoutService : IWorkoutService
     {
         private readonly ApplicationDbContext _context;
@@ -18,7 +17,6 @@ namespace FitnessTrackerApi.Service
         /// Инициализирует новый экземпляр класса <see cref="WorkoutService"/>.
         /// </summary>
         /// <param name="context">Экземпляр <see cref="ApplicationDbContext"/> для взаимодействия с базой данных.</param>
-        
         public WorkoutService(ApplicationDbContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
@@ -29,7 +27,6 @@ namespace FitnessTrackerApi.Service
         /// </summary>
         /// <returns>Список тренировок <see cref="Workout"/>.</returns>
         /// <param name="cancellationToken">Токен отмены операции.</param>
-        
         public async Task<IEnumerable<Workout>> GetAllAsync(CancellationToken cancellationToken)
         {
             return await _context.Workouts
@@ -43,7 +40,6 @@ namespace FitnessTrackerApi.Service
         /// </summary>
         /// <param name="id">Идентификатор тренировки.</param>
         /// <param name="cancellationToken">Токен отмены операции.</param>
-        
         public async Task<Workout?> GetByIdAsync(int id, CancellationToken cancellationToken)
         {
             if (id <= 0)
@@ -61,7 +57,6 @@ namespace FitnessTrackerApi.Service
         /// <param name="workout">Объект тренировки для добавления.</param>
         /// <returns>Созданный объект <see cref="Workout"/>.</returns>
         /// <param name="cancellationToken">Токен отмены операции.</param>
-        
         public async Task<Workout> CreateAsync(Workout workout, CancellationToken cancellationToken)
         {
             ValidateWorkout(workout);
@@ -77,7 +72,6 @@ namespace FitnessTrackerApi.Service
         /// <param name="id">Идентификатор тренировки.</param>
         /// <param name="workout">Обновлённый объект тренировки.</param>
         /// <param name="cancellationToken">Токен отмены операции.</param>
-        
         public async Task<bool> UpdateAsync(int id, Workout workout, CancellationToken cancellationToken)
         {
             if (id != workout.Id)
@@ -104,7 +98,6 @@ namespace FitnessTrackerApi.Service
         /// </summary>
         /// <param name="id">Идентификатор тренировки.</param>
         /// <param name="cancellationToken">Токен отмены операции.</param>
-        
         public async Task<bool> DeleteAsync(int id, CancellationToken cancellationToken)
         {
             if (id <= 0)
@@ -129,7 +122,6 @@ namespace FitnessTrackerApi.Service
 /// </summary>
 /// <param name="workout"></param>
 /// <exception cref="ArgumentNullException"></exception>
-
         private static void ValidateWorkout(Workout workout)
         {
             if (workout == null)
