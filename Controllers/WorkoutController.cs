@@ -3,6 +3,7 @@ using FitnessTrackerApi.Models;
 using FitnessTrackerApi.Service;
 
 namespace FitnessTrackerApi.Controllers;
+
 /// <summary>
 /// Контроллер для управления тренировками
 /// </summary>
@@ -10,15 +11,17 @@ namespace FitnessTrackerApi.Controllers;
 [ApiController]
 public class WorkoutController : ControllerBase
 {
-    private readonly WorkoutService _workoutService;
+    private readonly IWorkoutService _workoutService;
+    
 /// <summary>
 /// Инициализирует новый экземпляр 
 /// </summary>
 /// <param name="workoutService">Сервис для работы с тренировками.</param>
-    public WorkoutController(WorkoutService workoutService)
+    public WorkoutController(IWorkoutService workoutService)
     {
         _workoutService = workoutService;
     }
+
 /// <summary>
 /// Получает список всех тренировок.
 /// </summary>
@@ -30,6 +33,7 @@ public class WorkoutController : ControllerBase
         var workouts = await _workoutService.GetAllAsync(cancellationToken);
         return Ok(workouts);
     }
+
 /// <summary>
 /// Получает информацию о тренировке по её идентификатору.
 /// </summary>
@@ -45,6 +49,7 @@ public class WorkoutController : ControllerBase
 
         return Ok(workout);
     }
+
 /// <summary>
 /// Создаёт новую тренировку.
 /// </summary>
@@ -57,6 +62,7 @@ public class WorkoutController : ControllerBase
         var createdWorkout = await _workoutService.CreateAsync(workout, cancellationToken);
         return CreatedAtAction(nameof(GetWorkout), new { id = createdWorkout.Id }, createdWorkout);
     }
+
 /// <summary>
 /// Обновляет тренировку.
 /// </summary>
@@ -73,6 +79,7 @@ public class WorkoutController : ControllerBase
 
         return NoContent();
     }
+
 /// <summary>
 /// Удаляет тренировку по идентификатору.
 /// </summary>
