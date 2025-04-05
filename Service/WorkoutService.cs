@@ -4,13 +4,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FitnessTrackerApi.Service 
 {
+    
     /// <summary>
     /// Сервис для работы с тренировками.
     /// Отвечает за выполнение операций CRUD (создание, чтение, обновление, удаление) с тренировками.
     /// </summary>
-    public class WorkoutService
+    public class WorkoutService : IWorkoutService
     {
         private readonly ApplicationDbContext _context;
+        
         /// <summary>
         /// Инициализирует новый экземпляр класса <see cref="WorkoutService"/>.
         /// </summary>
@@ -19,6 +21,7 @@ namespace FitnessTrackerApi.Service
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
+        
         /// <summary>
         /// Получает список всех тренировок.
         /// </summary>
@@ -26,8 +29,12 @@ namespace FitnessTrackerApi.Service
         /// <param name="cancellationToken">Токен отмены операции.</param>
         public async Task<IEnumerable<Workout>> GetAllAsync(CancellationToken cancellationToken)
         {
-            return await _context.Workouts.Where(w => !w.IsDeleted).AsNoTracking().ToListAsync(cancellationToken);
+            return await _context.Workouts
+                .Where(w => !w.IsDeleted)
+                .AsNoTracking()
+                .ToListAsync(cancellationToken);
         }
+        
         /// <summary>
         /// Получает тренировку по её идентификатору.
         /// </summary>
@@ -39,14 +46,17 @@ namespace FitnessTrackerApi.Service
             {
                 throw new ArgumentException("ID должен быть больше нуля", nameof(id));
             }
-            return await _context.Workouts.Where(w => w.Id == id && !w.IsDeleted).SingleOrDefaultAsync(cancellationToken);
+            return await _context.Workouts
+                .Where(w => w.Id == id && !w.IsDeleted)
+                .SingleOrDefaultAsync(cancellationToken);
         }
+        
         /// <summary>
         /// Создаёт новую тренировку.
         /// </summary>
         /// <param name="workout">Объект тренировки для добавления.</param>
         /// <returns>Созданный объект <see cref="Workout"/>.</returns>
-        /// <param name="cancellationToken">Токен отмены операции.</param> 
+        /// <param name="cancellationToken">Токен отмены операции.</param>
         public async Task<Workout> CreateAsync(Workout workout, CancellationToken cancellationToken)
         {
             ValidateWorkout(workout);
@@ -55,6 +65,7 @@ namespace FitnessTrackerApi.Service
             await _context.SaveChangesAsync(cancellationToken);
             return workout;
         }
+        
         /// <summary>
         /// Обновляет данные существующей тренировки.
         /// </summary>
@@ -68,7 +79,9 @@ namespace FitnessTrackerApi.Service
                 throw new ArgumentException("ID тренировки не совпадает", nameof(id));
             }
             
-            var existingWorkout = await _context.Workouts.Where(w => w.Id == id && !w.IsDeleted).SingleOrDefaultAsync(cancellationToken);
+            var existingWorkout = await _context.Workouts
+                .Where(w => w.Id == id && !w.IsDeleted)
+                .SingleOrDefaultAsync(cancellationToken);
 
             if (existingWorkout == null)
             {
@@ -79,6 +92,7 @@ namespace FitnessTrackerApi.Service
             await _context.SaveChangesAsync(cancellationToken);
             return true;
         }
+        
         /// <summary>
         /// Удаляет тренировку по её идентификатору.
         /// </summary>
@@ -91,7 +105,9 @@ namespace FitnessTrackerApi.Service
                 throw new ArgumentException("ID должен быть больше нуля", nameof(id));
             }
             
-            var workout = await _context.Workouts.Where(w => w.Id == id && !w.IsDeleted).SingleOrDefaultAsync(cancellationToken);
+            var workout = await _context.Workouts
+                .Where(w => w.Id == id && !w.IsDeleted)
+                .SingleOrDefaultAsync(cancellationToken);
             if (workout == null)
                 return false;
             
@@ -100,6 +116,7 @@ namespace FitnessTrackerApi.Service
             await _context.SaveChangesAsync(cancellationToken);
             return true;
         }
+        
 /// <summary>
 /// Проверяет корректность данных тренировки
 /// </summary>
