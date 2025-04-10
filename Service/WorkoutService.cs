@@ -30,7 +30,6 @@ namespace FitnessTrackerApi.Service
         public async Task<IEnumerable<Workout>> GetAllAsync(CancellationToken cancellationToken)
         {
             return await _context.Workouts
-                .Where(w => !w.IsDeleted)
                 .AsNoTracking()
                 .ToListAsync(cancellationToken);
         }
@@ -47,7 +46,6 @@ namespace FitnessTrackerApi.Service
                 throw new ArgumentException("ID должен быть больше нуля", nameof(id));
             }
             return await _context.Workouts
-                .Where(w => w.Id == id && !w.IsDeleted)
                 .SingleOrDefaultAsync(cancellationToken);
         }
         
@@ -80,7 +78,6 @@ namespace FitnessTrackerApi.Service
             }
             
             var existingWorkout = await _context.Workouts
-                .Where(w => w.Id == id && !w.IsDeleted)
                 .SingleOrDefaultAsync(cancellationToken);
 
             if (existingWorkout == null)
@@ -106,12 +103,10 @@ namespace FitnessTrackerApi.Service
             }
             
             var workout = await _context.Workouts
-                .Where(w => w.Id == id && !w.IsDeleted)
                 .SingleOrDefaultAsync(cancellationToken);
             if (workout == null)
                 return false;
             
-            workout.IsDeleted = true;
             _context.Entry(workout).State = EntityState.Modified;
             await _context.SaveChangesAsync(cancellationToken);
             return true;

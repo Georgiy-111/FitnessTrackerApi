@@ -29,8 +29,4 @@ public class Workout
     /// </summary>
     public int Duration { get; set; }
     
-    /// <summary>
-    /// Показывает, было ли удалено данное значение.
-    /// </summary>
-    public bool IsDeleted { get; set; }
 }
