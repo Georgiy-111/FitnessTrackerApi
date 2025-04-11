@@ -38,9 +38,18 @@ namespace FitnessTrackerApi.Service
         public async Task<Workout?> GetByIdAsync(int id, CancellationToken cancellationToken)
         {
             if (id <= 0)
-                throw new ArgumentException("ID должен быть больше нуля", nameof(id));
+            {
+                throw new ArgumentException("ID должен быть больше нуля", nameof(id)); 
+            }
+            
+            var workout = await _repository.GetByIdAsync(id, cancellationToken);
 
-            return await _repository.GetByIdAsync(id, cancellationToken);
+            if (workout == null)
+            {
+                throw new KeyNotFoundException("Тренировка не найдена или была удалена");
+            }
+            
+            return workout;
         }
         
         /// <summary>
@@ -63,10 +72,24 @@ namespace FitnessTrackerApi.Service
         /// <param name="cancellationToken">Токен отмены операции.</param>
         public async Task<bool> UpdateAsync(int id, Workout workout, CancellationToken cancellationToken)
         {
+            if (id <= 0)
+            {
+                throw new ArgumentException("ID должен быть больше нуля", nameof(id));  
+            }
+
             if (id != workout.Id)
+            {
                 throw new ArgumentException("ID тренировки не совпадает", nameof(id));
+            }
 
             ValidateWorkout(workout);
+            
+            var existingWorkout = await _repository.GetByIdAsync(id, cancellationToken);
+            
+            if (existingWorkout == null)
+            {
+                throw new KeyNotFoundException("Тренировка не найдена или была удалена");
+            }
 
             return await _repository.UpdateAsync(id, workout, cancellationToken);
         }
@@ -79,7 +102,9 @@ namespace FitnessTrackerApi.Service
         public async Task<bool> DeleteAsync(int id, CancellationToken cancellationToken)
         {
             if (id <= 0)
+            {
                 throw new ArgumentException("ID должен быть больше нуля", nameof(id));
+            }
 
             return await _repository.DeleteAsync(id, cancellationToken);
         }
