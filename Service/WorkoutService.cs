@@ -1,6 +1,5 @@
-﻿using FitnessTrackerApi.Data;
-using FitnessTrackerApi.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using FitnessTrackerApi.Models;
+using FitnessTrackerApi.Repositories;
 
 namespace FitnessTrackerApi.Service 
 {
@@ -11,15 +10,14 @@ namespace FitnessTrackerApi.Service
     /// </summary>
     public class WorkoutService : IWorkoutService
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IWorkoutRepository _repository;
         
         /// <summary>
         /// Инициализирует новый экземпляр класса <see cref="WorkoutService"/>.
         /// </summary>
-        /// <param name="context">Экземпляр <see cref="ApplicationDbContext"/> для взаимодействия с базой данных.</param>
-        public WorkoutService(ApplicationDbContext context)
+        public WorkoutService(IWorkoutRepository repository)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
         
         /// <summary>
@@ -29,9 +27,7 @@ namespace FitnessTrackerApi.Service
         /// <param name="cancellationToken">Токен отмены операции.</param>
         public async Task<IEnumerable<Workout>> GetAllAsync(CancellationToken cancellationToken)
         {
-            return await _context.Workouts
-                .AsNoTracking()
-                .ToListAsync(cancellationToken);
+            return await _repository.GetAllAsync(cancellationToken);
         }
         
         /// <summary>
@@ -42,11 +38,9 @@ namespace FitnessTrackerApi.Service
         public async Task<Workout?> GetByIdAsync(int id, CancellationToken cancellationToken)
         {
             if (id <= 0)
-            {
                 throw new ArgumentException("ID должен быть больше нуля", nameof(id));
-            }
-            return await _context.Workouts
-                .SingleOrDefaultAsync(w => w.Id == id, cancellationToken);
+
+            return await _repository.GetByIdAsync(id, cancellationToken);
         }
         
         /// <summary>
@@ -58,10 +52,7 @@ namespace FitnessTrackerApi.Service
         public async Task<Workout> CreateAsync(Workout workout, CancellationToken cancellationToken)
         {
             ValidateWorkout(workout);
-            
-            _context.Workouts.Add(workout);
-            await _context.SaveChangesAsync(cancellationToken);
-            return workout;
+            return await _repository.CreateAsync(workout, cancellationToken);
         }
         
         /// <summary>
@@ -73,21 +64,11 @@ namespace FitnessTrackerApi.Service
         public async Task<bool> UpdateAsync(int id, Workout workout, CancellationToken cancellationToken)
         {
             if (id != workout.Id)
-            {
                 throw new ArgumentException("ID тренировки не совпадает", nameof(id));
-            }
-            
-            var existingWorkout = await _context.Workouts
-                .SingleOrDefaultAsync(w => w.Id == id, cancellationToken);
 
-            if (existingWorkout == null)
-            {
-                throw new KeyNotFoundException("Тренировка не найдена или была удалена");
-            }
-            
-            _context.Entry(existingWorkout).CurrentValues.SetValues(workout);
-            await _context.SaveChangesAsync(cancellationToken);
-            return true;
+            ValidateWorkout(workout);
+
+            return await _repository.UpdateAsync(id, workout, cancellationToken);
         }
         
         /// <summary>
@@ -98,19 +79,9 @@ namespace FitnessTrackerApi.Service
         public async Task<bool> DeleteAsync(int id, CancellationToken cancellationToken)
         {
             if (id <= 0)
-            {
                 throw new ArgumentException("ID должен быть больше нуля", nameof(id));
-            }
-            
-            var workout = await _context.Workouts
-                .FirstOrDefaultAsync(w => w.Id == id, cancellationToken);
-            
-            if (workout == null)
-                return false;
-            
-            _context.Workouts.Remove(workout);
-            await _context.SaveChangesAsync(cancellationToken);
-            return true;
+
+            return await _repository.DeleteAsync(id, cancellationToken);
         }
         
 /// <summary>

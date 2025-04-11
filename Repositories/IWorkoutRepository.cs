@@ -1,14 +1,12 @@
 using FitnessTrackerApi.Models;
 
-namespace FitnessTrackerApi.Service;
+namespace FitnessTrackerApi.Repositories;
 
 /// <summary>
-/// Интерфейс для управления тренировками.
-/// Определяет основные CRUD-операции для работы с сущностью Workout.
+/// Интерфейс репозитория для работы с тренировками.
 /// </summary>
-public interface IWorkoutService
+public interface IWorkoutRepository
 {
-    
     /// <summary>
     /// Получает все тренировки.
     /// </summary>
