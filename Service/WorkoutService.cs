@@ -46,7 +46,7 @@ namespace FitnessTrackerApi.Service
                 throw new ArgumentException("ID должен быть больше нуля", nameof(id));
             }
             return await _context.Workouts
-                .SingleOrDefaultAsync(cancellationToken);
+                .SingleOrDefaultAsync(w => w.Id == id, cancellationToken);
         }
         
         /// <summary>
@@ -78,7 +78,7 @@ namespace FitnessTrackerApi.Service
             }
             
             var existingWorkout = await _context.Workouts
-                .SingleOrDefaultAsync(cancellationToken);
+                .SingleOrDefaultAsync(w => w.Id == id, cancellationToken);
 
             if (existingWorkout == null)
             {
@@ -103,11 +103,12 @@ namespace FitnessTrackerApi.Service
             }
             
             var workout = await _context.Workouts
-                .SingleOrDefaultAsync(cancellationToken);
+                .FirstOrDefaultAsync(w => w.Id == id, cancellationToken);
+            
             if (workout == null)
                 return false;
             
-            _context.Entry(workout).State = EntityState.Modified;
+            _context.Workouts.Remove(workout);
             await _context.SaveChangesAsync(cancellationToken);
             return true;
         }

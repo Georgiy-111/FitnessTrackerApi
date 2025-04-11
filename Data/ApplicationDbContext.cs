@@ -21,6 +21,6 @@ namespace FitnessTrackerApi.Data
         /// <summary>
         /// Набор данных (таблица) для хранения тренировок.
         /// </summary>
-        public DbSet<Workout> Workouts { get; init; }
+        public DbSet<Workout> Workouts { get; set; }
     }
 }
