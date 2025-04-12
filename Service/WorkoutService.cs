@@ -20,9 +20,6 @@ namespace FitnessTrackerApi.Service
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
         
-        /// <summary>
-        /// Получает список всех тренировок.
-        /// </summary>
         /// <returns>Список тренировок <see cref="Workout"/>.</returns>
         /// <param name="cancellationToken">Токен отмены операции.</param>
         public async Task<IEnumerable<Workout>> GetAllAsync(CancellationToken cancellationToken)
@@ -30,16 +27,13 @@ namespace FitnessTrackerApi.Service
             return await _repository.GetAllAsync(cancellationToken);
         }
         
-        /// <summary>
-        /// Получает тренировку по её идентификатору.
-        /// </summary>
         /// <param name="id">Идентификатор тренировки.</param>
         /// <param name="cancellationToken">Токен отмены операции.</param>
         public async Task<Workout?> GetByIdAsync(int id, CancellationToken cancellationToken)
         {
             if (id <= 0)
             {
-                throw new ArgumentException("ID должен быть больше нуля", nameof(id)); 
+                return null;
             }
             
             var workout = await _repository.GetByIdAsync(id, cancellationToken);
@@ -52,9 +46,6 @@ namespace FitnessTrackerApi.Service
             return workout;
         }
         
-        /// <summary>
-        /// Создаёт новую тренировку.
-        /// </summary>
         /// <param name="workout">Объект тренировки для добавления.</param>
         /// <returns>Созданный объект <see cref="Workout"/>.</returns>
         /// <param name="cancellationToken">Токен отмены операции.</param>
@@ -64,9 +55,6 @@ namespace FitnessTrackerApi.Service
             return await _repository.CreateAsync(workout, cancellationToken);
         }
         
-        /// <summary>
-        /// Обновляет данные существующей тренировки.
-        /// </summary>
         /// <param name="id">Идентификатор тренировки.</param>
         /// <param name="workout">Обновлённый объект тренировки.</param>
         /// <param name="cancellationToken">Токен отмены операции.</param>
@@ -94,9 +82,6 @@ namespace FitnessTrackerApi.Service
             return await _repository.UpdateAsync(id, workout, cancellationToken);
         }
         
-        /// <summary>
-        /// Удаляет тренировку по её идентификатору.
-        /// </summary>
         /// <param name="id">Идентификатор тренировки.</param>
         /// <param name="cancellationToken">Токен отмены операции.</param>
         public async Task<bool> DeleteAsync(int id, CancellationToken cancellationToken)

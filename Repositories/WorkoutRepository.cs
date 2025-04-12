@@ -20,10 +20,7 @@ public class WorkoutRepository : IWorkoutRepository
     {
         _context = context;
     }
-
-    /// <summary>
-    /// Получает все тренировки.
-    /// </summary>
+    
     /// <param name="cancellationToken">Токен для отмены операции.</param>
     /// <returns>Список всех тренировок.</returns>
     public async Task<IEnumerable<Workout>> GetAllAsync(CancellationToken cancellationToken)
@@ -33,9 +30,6 @@ public class WorkoutRepository : IWorkoutRepository
             .ToListAsync(cancellationToken);
     }
     
-    /// <summary>
-    /// Получает тренировку по её идентификатору.
-    /// </summary>
     /// <param name="id">Идентификатор тренировки.</param>
     /// <param name="cancellationToken">Токен для отмены операции.</param>
     /// <returns>Тренировка с указанным идентификатором или <c>null</c>, если тренировка не найдена.</returns>
@@ -45,10 +39,7 @@ public class WorkoutRepository : IWorkoutRepository
             .AsNoTracking()
             .FirstOrDefaultAsync(w => w.Id == id, cancellationToken);
     }
-
-    /// <summary>
-    /// Создаёт новую тренировку.
-    /// </summary>
+    
     /// <param name="workout">Объект тренировки для добавления в базу данных.</param>
     /// <param name="cancellationToken">Токен для отмены операции.</param>
     /// <returns>Созданная тренировка с её данными.</returns>
@@ -59,9 +50,6 @@ public class WorkoutRepository : IWorkoutRepository
         return workout;
     }
     
-    /// <summary>
-    /// Обновляет данные существующей тренировки.
-    /// </summary>
     /// <param name="id">Идентификатор тренировки, которую нужно обновить.</param>
     /// <param name="workout">Обновлённая информация о тренировке.</param>
     /// <param name="cancellationToken">Токен для отмены операции.</param>
@@ -81,9 +69,6 @@ public class WorkoutRepository : IWorkoutRepository
         return true;
     }
     
-    /// <summary>
-    /// Удаляет тренировку по её идентификатору.
-    /// </summary>
     /// <param name="id">Идентификатор тренировки, которую нужно удалить.</param>
     /// <param name="cancellationToken">Токен для отмены операции.</param>
     public async Task<bool> DeleteAsync(int id, CancellationToken cancellationToken)
