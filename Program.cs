@@ -1,16 +1,12 @@
 using System.Reflection;
-using Microsoft.EntityFrameworkCore;
-using FitnessTrackerApi.Data;
-using FitnessTrackerApi.Service;
-using FitnessTrackerApi.Repositories;
+using FitnessTrackerApi.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddScoped<IWorkoutService, WorkoutService>();
-builder.Services.AddScoped<IWorkoutRepository, WorkoutRepository>();
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(
-        builder.Configuration.GetConnectionString("DefaultConnection")
-    ));
+
+builder.Services
+    .AddCoreServices()
+    .AddRepositories()
+    .AddDatabase(builder.Configuration);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
