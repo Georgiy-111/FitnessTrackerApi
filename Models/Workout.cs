@@ -2,31 +2,15 @@
 
 namespace FitnessTrackerApi.Models;
 
-/// <summary>
-/// Модель данных для тренировки.
-/// </summary>
 public class Workout
 {
-    /// <summary>
-    /// Уникальный идентификатор тренировки.
-    /// </summary>
     public int Id { get; set; }
-
-    /// <summary>
-    /// Название тренировки.
-    /// </summary>
-    [MaxLength(50, ErrorMessage = "Макс длина 50 символов!")]
+    
+    [MaxLength(500, ErrorMessage = "Макс длина 500 символов!")]
     public string Name { get; set; } = string.Empty;
     
-    /// <summary>
-    /// Описание тренировки.
-    /// </summary>
-    [MaxLength(50, ErrorMessage = "Максимальная длина 50 символов!")]
+    [MaxLength(500, ErrorMessage = "Максимальная длина 500 символов!")]
     public string Description { get; set; } = string.Empty;
     
-    /// <summary>
-    /// Продолжительность тренировки (в минутах).
-    /// </summary>
     public int Duration { get; set; }
-    
 }

@@ -4,17 +4,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FitnessTrackerApi.Repositories;
 
-/// <summary>
-/// Репозиторий для работы с сущностью тренировки.
-/// Осуществляет CRUD операции для объектов <see cref="Workout"/>.
-/// </summary>
 public class WorkoutRepository : IWorkoutRepository
 {
     private readonly ApplicationDbContext _context;
-
-    /// <summary>
-    /// Инициализирует новый экземпляр репозитория тренировок.
-    /// </summary>
+    
     /// <param name="context">Экземпляр контекста базы данных <see cref="ApplicationDbContext"/>.</param>
     public WorkoutRepository(ApplicationDbContext context)
     {

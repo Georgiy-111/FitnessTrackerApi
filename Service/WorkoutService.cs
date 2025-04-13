@@ -3,18 +3,10 @@ using FitnessTrackerApi.Repositories;
 
 namespace FitnessTrackerApi.Service 
 {
-    
-    /// <summary>
-    /// Сервис для работы с тренировками.
-    /// Отвечает за выполнение операций CRUD (создание, чтение, обновление, удаление) с тренировками.
-    /// </summary>
     public class WorkoutService : IWorkoutService
     {
         private readonly IWorkoutRepository _repository;
         
-        /// <summary>
-        /// Инициализирует новый экземпляр класса <see cref="WorkoutService"/>.
-        /// </summary>
         public WorkoutService(IWorkoutRepository repository)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
@@ -94,11 +86,7 @@ namespace FitnessTrackerApi.Service
             return await _repository.DeleteAsync(id, cancellationToken);
         }
         
-/// <summary>
-/// Проверяет корректность данных тренировки
-/// </summary>
-/// <param name="workout"></param>
-/// <exception cref="ArgumentNullException"></exception>
+        /// <param name="workout">Объект тренировки для проверки.</param>
         private static void ValidateWorkout(Workout workout)
         {
             if (workout == null)
