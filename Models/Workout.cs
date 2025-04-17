@@ -6,7 +6,7 @@ public class Workout
 {
     public int Id { get; set; }
     
-    [MaxLength(500, ErrorMessage = "Макс длина 500 символов!")]
+    [MaxLength(100, ErrorMessage = "Максимальная длина 100 символов!")]
     public string Name { get; set; } = string.Empty;
     
     [MaxLength(500, ErrorMessage = "Максимальная длина 500 символов!")]

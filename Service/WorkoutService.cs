@@ -1,5 +1,6 @@
 ﻿using FitnessTrackerApi.Models;
-using FitnessTrackerApi.Repositories;
+using FitnessTrackerApi.Repositories.Interfaces;
+using FitnessTrackerApi.Service.Interfaces;
 
 namespace FitnessTrackerApi.Service 
 {

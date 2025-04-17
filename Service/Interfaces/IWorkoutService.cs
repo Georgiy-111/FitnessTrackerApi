@@ -1,6 +1,6 @@
 using FitnessTrackerApi.Models;
 
-namespace FitnessTrackerApi.Service;
+namespace FitnessTrackerApi.Service.Interfaces;
 
 /// <summary>
 /// Интерфейс для управления тренировками.

@@ -1,6 +1,7 @@
 using FitnessTrackerApi.Data;
 using FitnessTrackerApi.Models;
 using Microsoft.EntityFrameworkCore;
+using FitnessTrackerApi.Repositories.Interfaces;
 
 namespace FitnessTrackerApi.Repositories;
 

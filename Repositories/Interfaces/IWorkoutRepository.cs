@@ -1,6 +1,6 @@
 using FitnessTrackerApi.Models;
 
-namespace FitnessTrackerApi.Repositories;
+namespace FitnessTrackerApi.Repositories.Interfaces;
 
 /// <summary>
 /// Интерфейс репозитория для работы с тренировками.

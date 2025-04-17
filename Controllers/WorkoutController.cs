@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using FitnessTrackerApi.Models;
-using FitnessTrackerApi.Service;
+using FitnessTrackerApi.Service.Interfaces;
 
 namespace FitnessTrackerApi.Controllers;
 
