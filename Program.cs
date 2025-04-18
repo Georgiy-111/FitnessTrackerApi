@@ -1,15 +1,13 @@
 using System.Reflection;
 using FitnessTrackerApi.Extensions;
-using FitnessTrackerApi.Data.Interfaces;
-using FitnessTrackerApi.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
 builder.Services
     .AddCoreServices()
     .AddRepositories()
-    .AddDatabase(builder.Configuration);
+    .AddDatabase(builder.Configuration)
+    .AddValidation();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

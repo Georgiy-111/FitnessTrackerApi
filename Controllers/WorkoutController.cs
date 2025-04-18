@@ -9,15 +9,21 @@ namespace FitnessTrackerApi.Controllers;
 public class WorkoutController : ControllerBase
 {
     private readonly IWorkoutService _workoutService;
-    
-/// <param name="workoutService">Сервис для работы с тренировками.</param>
+
+    /// <summary>
+    /// Конструктор контроллера для работы с тренировками.
+    /// </summary>
+    /// <param name="workoutService">Сервис для управления тренировками.</param>
     public WorkoutController(IWorkoutService workoutService)
     {
         _workoutService = workoutService;
     }
 
-/// <returns>Список тренировок.</returns>
-/// <param name="cancellationToken">Токен отмены операции.</param>
+    /// <summary>
+    /// Получить список всех тренировок.
+    /// </summary>
+    /// <param name="cancellationToken">Токен отмены операции.</param>
+    /// <returns>Список тренировок.</returns>
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Workout>>> GetWorkouts(CancellationToken cancellationToken)
     {
@@ -25,9 +31,12 @@ public class WorkoutController : ControllerBase
         return Ok(workouts);
     }
 
-/// <param name="id">Идентификатор тренировки.</param>
-/// <returns>Тренировка или ошибка 404, если не найдена.</returns>
-/// <param name="cancellationToken">Токен отмены операции.</param>
+    /// <summary>
+    /// Получить тренировку по идентификатору.
+    /// </summary>
+    /// <param name="id">Идентификатор тренировки.</param>
+    /// <param name="cancellationToken">Токен отмены операции.</param>
+    /// <returns>Тренировка или 404, если не найдена.</returns>
     [HttpGet("{id}")]
     public async Task<ActionResult<Workout>> GetWorkout(int id, CancellationToken cancellationToken)
     {
@@ -38,9 +47,12 @@ public class WorkoutController : ControllerBase
         return Ok(workout);
     }
 
-/// <param name="workout">Объект тренировки.</param>
-/// <returns>Созданная тренировка с её ID.</returns>
-/// <param name="cancellationToken">Токен отмены операции.</param>
+    /// <summary>
+    /// Создать новую тренировку.
+    /// </summary>
+    /// <param name="workout">Объект тренировки.</param>
+    /// <param name="cancellationToken">Токен отмены операции.</param>
+    /// <returns>Созданная тренировка с её идентификатором.</returns>
     [HttpPost]
     public async Task<ActionResult<Workout>> CreateWorkout(Workout workout, CancellationToken cancellationToken)
     {
@@ -48,10 +60,13 @@ public class WorkoutController : ControllerBase
         return CreatedAtAction(nameof(GetWorkout), new { id = createdWorkout.Id }, createdWorkout);
     }
 
-/// <param name="id">Идентификатор тренировки.</param>
-/// <param name="workout">Обновлённые данные тренировки.</param>
-/// <returns>Результат операции (204 No Content или 400 Bad Request).</returns>
-/// <param name="cancellationToken">Токен отмены операции.</param>
+    /// <summary>
+    /// Обновить существующую тренировку.
+    /// </summary>
+    /// <param name="id">Идентификатор тренировки.</param>
+    /// <param name="workout">Обновлённые данные тренировки.</param>
+    /// <param name="cancellationToken">Токен отмены операции.</param>
+    /// <returns>Результат выполнения операции (204 или 400).</returns>
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateWorkout(int id, Workout workout, CancellationToken cancellationToken)
     {
@@ -62,9 +77,12 @@ public class WorkoutController : ControllerBase
         return NoContent();
     }
 
-/// <param name="id">Идентификатор тренировки.</param>
-/// <returns>Результат операции (204 No Content или 404 Not Found).</returns>
-/// <param name="cancellationToken">Токен отмены операции.</param>
+    /// <summary>
+    /// Удалить тренировку по идентификатору.
+    /// </summary>
+    /// <param name="id">Идентификатор тренировки.</param>
+    /// <param name="cancellationToken">Токен отмены операции.</param>
+    /// <returns>Результат выполнения операции (204 или 404).</returns>
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteWorkout(int id, CancellationToken cancellationToken)
     {

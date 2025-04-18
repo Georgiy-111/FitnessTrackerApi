@@ -3,7 +3,8 @@ using FitnessTrackerApi.Models;
 namespace FitnessTrackerApi.Repositories.Interfaces;
 
 /// <summary>
-/// Интерфейс репозитория для работы с тренировками.
+/// Интерфейс для управления тренировками.
+/// Определяет основные CRUD-операции для работы с сущностью Workout.
 /// </summary>
 public interface IWorkoutRepository
 {
@@ -41,5 +42,4 @@ public interface IWorkoutRepository
     /// <param name="id">Идентификатор тренировки, которую нужно удалить.</param>
     /// <param name="cancellationToken">Токен для отмены операции.</param>
     Task<bool> DeleteAsync(int id, CancellationToken cancellationToken);
-    
 }

@@ -6,6 +6,7 @@ using FitnessTrackerApi.Repositories.Interfaces;
 using FitnessTrackerApi.Service.Interfaces;
 using FitnessTrackerApi.Services;
 using FitnessTrackerApi.Services.Interfaces;
+using FitnessTrackerApi.Data.Interfaces;
 
 namespace FitnessTrackerApi.Extensions
 {
@@ -28,6 +29,7 @@ namespace FitnessTrackerApi.Extensions
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(configuration.GetDatabaseConnection()));
+            services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
             return services;
         }
     }
