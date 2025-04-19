@@ -2,9 +2,16 @@ namespace FitnessTrackerApi.Extensions
 {
     public static class ConfigurationExtensions
     {
-        public static string? GetDatabaseConnection(this IConfiguration configuration)
+        public static string GetDatabaseConnection(this IConfiguration configuration)
         {
-            return configuration.GetConnectionString("DefaultConnection");
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                throw new InvalidOperationException("Строка подключения не найдена в конфигурации.");
+            }
+            
+            return connectionString;
         }
     }
 }

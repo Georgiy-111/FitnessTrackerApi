@@ -7,7 +7,8 @@ builder.Services
     .AddCoreServices()
     .AddRepositories()
     .AddDatabase(builder.Configuration)
-    .AddValidation();
+    .AddValidation()
+    .AddAutoMapperProfiles(); 
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

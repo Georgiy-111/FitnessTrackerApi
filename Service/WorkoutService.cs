@@ -13,15 +13,11 @@ namespace FitnessTrackerApi.Service
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
         
-        /// <returns>Список тренировок <see cref="Workout"/>.</returns>
-        /// <param name="cancellationToken">Токен отмены операции.</param>
         public async Task<IEnumerable<Workout>> GetAllAsync(CancellationToken cancellationToken)
         {
             return await _repository.GetAllAsync(cancellationToken);
         }
         
-        /// <param name="id">Идентификатор тренировки.</param>
-        /// <param name="cancellationToken">Токен отмены операции.</param>
         public async Task<Workout?> GetByIdAsync(int id, CancellationToken cancellationToken)
         {
             if (id <= 0)
@@ -39,18 +35,12 @@ namespace FitnessTrackerApi.Service
             return workout;
         }
         
-        /// <param name="workout">Объект тренировки для добавления.</param>
-        /// <returns>Созданный объект <see cref="Workout"/>.</returns>
-        /// <param name="cancellationToken">Токен отмены операции.</param>
         public async Task<Workout> CreateAsync(Workout workout, CancellationToken cancellationToken)
         {
             ValidateWorkout(workout);
             return await _repository.CreateAsync(workout, cancellationToken);
         }
         
-        /// <param name="id">Идентификатор тренировки.</param>
-        /// <param name="workout">Обновлённый объект тренировки.</param>
-        /// <param name="cancellationToken">Токен отмены операции.</param>
         public async Task<bool> UpdateAsync(int id, Workout workout, CancellationToken cancellationToken)
         {
             if (id <= 0)
@@ -75,8 +65,6 @@ namespace FitnessTrackerApi.Service
             return await _repository.UpdateAsync(id, workout, cancellationToken);
         }
         
-        /// <param name="id">Идентификатор тренировки.</param>
-        /// <param name="cancellationToken">Токен отмены операции.</param>
         public async Task<bool> DeleteAsync(int id, CancellationToken cancellationToken)
         {
             if (id <= 0)
@@ -87,7 +75,6 @@ namespace FitnessTrackerApi.Service
             return await _repository.DeleteAsync(id, cancellationToken);
         }
         
-        /// <param name="workout">Объект тренировки для проверки.</param>
         private static void ValidateWorkout(Workout workout)
         {
             if (workout == null)

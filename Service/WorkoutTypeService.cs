@@ -5,9 +5,6 @@ using FitnessTrackerApi.Services.Interfaces;
 
 namespace FitnessTrackerApi.Services;
 
-/// <summary>
-/// Сервис для управления типами тренировок.
-/// </summary>
 public class WorkoutTypeService : IWorkoutTypeService
 {
     private readonly IWorkoutTypeRepository _repository;
@@ -16,10 +13,7 @@ public class WorkoutTypeService : IWorkoutTypeService
     {
         _repository = repository;
     }
-
-    /// <summary>
-    /// Получить все типы тренировок.
-    /// </summary>
+    
     public async Task<IEnumerable<WorkoutTypeDto>> GetAllAsync(CancellationToken cancellationToken)
     {
         var types = await _repository.GetAllAsync(cancellationToken);
@@ -29,10 +23,7 @@ public class WorkoutTypeService : IWorkoutTypeService
             Name = x.Name
         });
     }
-
-    /// <summary>
-    /// Получить тип тренировки по ID.
-    /// </summary>
+    
     public async Task<WorkoutTypeDto?> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
         var entity = await _repository.GetByIdAsync(id, cancellationToken);
@@ -44,10 +35,7 @@ public class WorkoutTypeService : IWorkoutTypeService
             Name = entity.Name
         };
     }
-
-    /// <summary>
-    /// Создать новый тип тренировки.
-    /// </summary>
+    
     public async Task<WorkoutTypeDto> CreateAsync(WorkoutTypeCreateDto dto, CancellationToken cancellationToken)
     {
         var entity = new WorkoutType
@@ -63,10 +51,7 @@ public class WorkoutTypeService : IWorkoutTypeService
             Name = created.Name
         };
     }
-
-    /// <summary>
-    /// Обновить существующий тип тренировки.
-    /// </summary>
+    
     public async Task<bool> UpdateAsync(int id, WorkoutTypeUpdateDto dto, CancellationToken cancellationToken)
     {
         var existing = await _repository.GetByIdAsync(id, cancellationToken);
@@ -76,10 +61,7 @@ public class WorkoutTypeService : IWorkoutTypeService
 
         return await _repository.UpdateAsync(existing, cancellationToken);
     }
-
-    /// <summary>
-    /// Удалить тип тренировки по ID.
-    /// </summary>
+    
     public async Task<bool> DeleteAsync(int id, CancellationToken cancellationToken)
     {
         var entity = await _repository.GetByIdAsync(id, cancellationToken);
