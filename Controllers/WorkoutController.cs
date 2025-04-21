@@ -1,46 +1,51 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using FitnessTrackerApi.Models;
-using FitnessTrackerApi.Service;
+using FitnessTrackerApi.Service.Interfaces;
 
 namespace FitnessTrackerApi.Controllers;
 
 /// <summary>
-/// Контроллер для управления тренировками
+/// Контроллер для работы с тренировками.
 /// </summary>
 [Route("api/[controller]")]
 [ApiController]
 public class WorkoutController : ControllerBase
 {
     private readonly IWorkoutService _workoutService;
-    
-/// <summary>
-/// Инициализирует новый экземпляр 
-/// </summary>
-/// <param name="workoutService">Сервис для работы с тренировками.</param>
+
+    /// <summary>
+    /// Конструктор контроллера для работы с тренировками.
+    /// </summary>
+    /// <param name="workoutService">Сервис для управления тренировками.</param>
     public WorkoutController(IWorkoutService workoutService)
     {
         _workoutService = workoutService;
     }
 
-/// <summary>
-/// Получает список всех тренировок.
-/// </summary>
-/// <returns>Список тренировок.</returns>
-/// <param name="cancellationToken">Токен отмены операции.</param>
+    /// <summary>
+    /// Получить список всех тренировок.
+    /// </summary>
+    /// <param name="cancellationToken">Токен отмены операции.</param>
+    /// <returns>Список тренировок.</returns>
     [HttpGet]
+    [ProducesResponseType(typeof(IEnumerable<Workout>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<IEnumerable<Workout>>> GetWorkouts(CancellationToken cancellationToken)
     {
         var workouts = await _workoutService.GetAllAsync(cancellationToken);
         return Ok(workouts);
     }
 
-/// <summary>
-/// Получает информацию о тренировке по её идентификатору.
-/// </summary>
-/// <param name="id">Идентификатор тренировки.</param>
-/// <returns>Тренировка или ошибка 404, если не найдена.</returns>
-/// <param name="cancellationToken">Токен отмены операции.</param>
+    /// <summary>
+    /// Получить тренировку по идентификатору.
+    /// </summary>
+    /// <param name="id">Идентификатор тренировки.</param>
+    /// <param name="cancellationToken">Токен отмены операции.</param>
+    /// <returns>Тренировка или 404, если не найдена.</returns>
     [HttpGet("{id}")]
+    [ProducesResponseType(typeof(Workout), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<Workout>> GetWorkout(int id, CancellationToken cancellationToken)
     {
         var workout = await _workoutService.GetByIdAsync(id, cancellationToken);
@@ -50,27 +55,34 @@ public class WorkoutController : ControllerBase
         return Ok(workout);
     }
 
-/// <summary>
-/// Создаёт новую тренировку.
-/// </summary>
-/// <param name="workout">Объект тренировки.</param>
-/// <returns>Созданная тренировка с её ID.</returns>
-/// <param name="cancellationToken">Токен отмены операции.</param>
+    /// <summary>
+    /// Создать новую тренировку.
+    /// </summary>
+    /// <param name="workout">Объект тренировки.</param>
+    /// <param name="cancellationToken">Токен отмены операции.</param>
+    /// <returns>Созданная тренировка с её идентификатором.</returns>
     [HttpPost]
+    [ProducesResponseType(typeof(Workout), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<Workout>> CreateWorkout(Workout workout, CancellationToken cancellationToken)
     {
         var createdWorkout = await _workoutService.CreateAsync(workout, cancellationToken);
         return CreatedAtAction(nameof(GetWorkout), new { id = createdWorkout.Id }, createdWorkout);
     }
 
-/// <summary>
-/// Обновляет тренировку.
-/// </summary>
-/// <param name="id">Идентификатор тренировки.</param>
-/// <param name="workout">Обновлённые данные тренировки.</param>
-/// <returns>Результат операции (204 No Content или 400 Bad Request).</returns>
-/// <param name="cancellationToken">Токен отмены операции.</param>
+    /// <summary>
+    /// Обновить существующую тренировку.
+    /// </summary>
+    /// <param name="id">Идентификатор тренировки.</param>
+    /// <param name="workout">Обновлённые данные тренировки.</param>
+    /// <param name="cancellationToken">Токен отмены операции.</param>
+    /// <returns>Результат выполнения операции (204).</returns>
     [HttpPut("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> UpdateWorkout(int id, Workout workout, CancellationToken cancellationToken)
     {
         var success = await _workoutService.UpdateAsync(id, workout, cancellationToken);
@@ -80,13 +92,16 @@ public class WorkoutController : ControllerBase
         return NoContent();
     }
 
-/// <summary>
-/// Удаляет тренировку по идентификатору.
-/// </summary>
-/// <param name="id">Идентификатор тренировки.</param>
-/// <returns>Результат операции (204 No Content или 404 Not Found).</returns>
-/// <param name="cancellationToken">Токен отмены операции.</param>
+    /// <summary>
+    /// Удалить тренировку по идентификатору.
+    /// </summary>
+    /// <param name="id">Идентификатор тренировки.</param>
+    /// <param name="cancellationToken">Токен отмены операции.</param>
+    /// <returns>Результат выполнения операции (204).</returns>
     [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> DeleteWorkout(int id, CancellationToken cancellationToken)
     {
         var success = await _workoutService.DeleteAsync(id, cancellationToken);
