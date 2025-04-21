@@ -1,15 +1,14 @@
 using System.Reflection;
-using Microsoft.EntityFrameworkCore;
-using FitnessTrackerApi.Data;
-using FitnessTrackerApi.Service;
+using FitnessTrackerApi.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddScoped<IWorkoutService, WorkoutService>();
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseMySql(
-        builder.Configuration.GetConnectionString("DefaultConnection"),
-        ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))
-    ));
+
+builder.Services
+    .AddCoreServices()
+    .AddRepositories()
+    .AddDatabase(builder.Configuration)
+    .AddValidation()
+    .AddAutoMapperProfiles(); 
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
